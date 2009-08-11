@@ -4,7 +4,7 @@ $inFunction = false
 #checkVariable
 def cV(token)
 	if token.class == Literal and token.type == :NAME
-		$varManager[token.value]
+		$scopingManager.varManager[token.value]
 	end
 	return token
 end
@@ -159,7 +159,7 @@ end
 class Function
 	attr_accessor :name, :args, :code, :returntype
 
-	def initialize(name, args, code, returntype = nil)
+	def initialize(name, args, returntype = nil, code = [])
 		@name = name
 		@args = args
 		@code = code
@@ -271,7 +271,7 @@ class Variable
     @type = type
     @name = name
 	@array = array
-	$varManager.newVariable(self)
+	$scopingManager.varManager.newVariable(self)
   end
   
   def repr
@@ -325,10 +325,29 @@ class VariableManager
   end
 end
 
-class Manager
-	attr_accessor :varManager, :
 
-$varManager = VariableManager.new
+class ScopingManager
+	attr_accessor :varManager, :layers
+  def initialize 
+    @varManager = VariableManager.new
+    @layers = [Scope.new "", [] ]
+  end
+  
+  def pop
+    layers.pop
+  end
+  
+  def push
+    layers.push
+  end
+  
+  def addCode(code)
+    @layer[-1].code.push code
+    
+  def addBlock(block)
+    @layer[-1].blocks.push block
+
+$scopingManager = ScopingManager.new
 
 Variable.new("int", "abc").repr
 puts Call.new(Literal.new(:NAME, "BJDebugMsg"), [Literal.new(:NAME, "abc"), Call.new(Literal.new(:NAME, "I2S"), [Literal.new(:INT, 5)])]).repr
