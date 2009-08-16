@@ -334,11 +334,17 @@ class ScopingManager
   end
   
   def pop
-    layers.pop
+    v = @layers[-1].class
+    if v == If or v == ElseIf or v == Else
+      @layers.pop
+    end
+    @layers.pop
+    @varManager.pop
   end
   
   def push
-    layers.push
+    @layers.push
+    @varManager.push
   end
   
   def addCode(code)
@@ -346,6 +352,7 @@ class ScopingManager
     
   def addBlock(block)
     @layer[-1].blocks.push block
+    self.push block
 
 $scopingManager = ScopingManager.new
 
