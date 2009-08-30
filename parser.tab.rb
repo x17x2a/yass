@@ -5,7 +5,22 @@
 #
 
 require 'racc/parser.rb'
+
+require 'lexer'
+require 'objects'
+
 class YassParser < Racc::Parser
+
+module_eval(<<'...end parser.y/module_eval...', 'parser.y', 103)
+	def start(text)
+		@q = do_lex text
+		do_parse
+	end
+	
+	def next_token
+	  @q.shift
+	end
+...end parser.y/module_eval...
 ##### State transition tables begin ###
 
 racc_action_table = [
@@ -38,40 +53,40 @@ racc_goto_default = [
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  1, 37, :_reduce_none,
-  1, 37, :_reduce_none,
-  1, 37, :_reduce_none,
+  1, 37, :_reduce_1,
+  1, 37, :_reduce_2,
+  1, 37, :_reduce_3,
+  1, 38, :_reduce_none,
+  1, 38, :_reduce_5,
   1, 38, :_reduce_none,
   1, 38, :_reduce_none,
   1, 38, :_reduce_none,
   1, 38, :_reduce_none,
   1, 38, :_reduce_none,
-  1, 38, :_reduce_none,
-  1, 38, :_reduce_none,
-  3, 39, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  3, 40, :_reduce_none,
-  2, 41, :_reduce_none,
-  2, 41, :_reduce_none,
-  4, 42, :_reduce_none,
-  4, 43, :_reduce_none,
-  1, 44, :_reduce_none,
-  3, 44, :_reduce_none,
+  3, 39, :_reduce_11,
+  3, 40, :_reduce_12,
+  3, 40, :_reduce_13,
+  3, 40, :_reduce_14,
+  3, 40, :_reduce_15,
+  3, 40, :_reduce_16,
+  3, 40, :_reduce_17,
+  3, 40, :_reduce_18,
+  3, 40, :_reduce_19,
+  3, 40, :_reduce_20,
+  3, 40, :_reduce_21,
+  3, 40, :_reduce_22,
+  3, 40, :_reduce_23,
+  2, 41, :_reduce_24,
+  2, 41, :_reduce_25,
+  4, 42, :_reduce_26,
+  4, 43, :_reduce_27,
+  1, 44, :_reduce_28,
+  3, 44, :_reduce_29,
   1, 45, :_reduce_none,
-  2, 46, :_reduce_none,
-  5, 46, :_reduce_none,
-  2, 47, :_reduce_none,
-  2, 48, :_reduce_none,
+  2, 46, :_reduce_31,
+  5, 46, :_reduce_32,
+  2, 47, :_reduce_33,
+  2, 48, :_reduce_34,
   0, 49, :_reduce_none,
   2, 49, :_reduce_none,
   3, 49, :_reduce_none,
@@ -82,13 +97,13 @@ racc_reduce_table = [
   7, 51, :_reduce_none,
   1, 52, :_reduce_none,
   1, 52, :_reduce_none,
-  1, 52, :_reduce_none,
-  1, 52, :_reduce_none,
-  1, 52, :_reduce_none,
-  2, 52, :_reduce_none,
-  2, 52, :_reduce_none,
-  2, 52, :_reduce_none,
-  1, 52, :_reduce_none,
+  1, 52, :_reduce_45,
+  1, 52, :_reduce_46,
+  1, 52, :_reduce_47,
+  2, 52, :_reduce_48,
+  2, 52, :_reduce_49,
+  2, 52, :_reduce_50,
+  1, 52, :_reduce_51,
   2, 54, :_reduce_none,
   2, 54, :_reduce_none,
   2, 56, :_reduce_none,
@@ -100,9 +115,9 @@ racc_reduce_table = [
   3, 58, :_reduce_none,
   2, 53, :_reduce_none,
   3, 53, :_reduce_none,
-  1, 55, :_reduce_none,
-  2, 55, :_reduce_none,
-  2, 55, :_reduce_none,
+  1, 55, :_reduce_63,
+  2, 55, :_reduce_64,
+  2, 55, :_reduce_65,
   0, 59, :_reduce_none,
   1, 59, :_reduce_none,
   2, 59, :_reduce_none ]
@@ -237,15 +252,35 @@ Racc_debug_parser = false
 
 # reduce 0 omitted
 
-# reduce 1 omitted
+module_eval(<<'.,.,', 'parser.y', 3)
+  def _reduce_1(val, _values, result)
+    result = Literal.new :INT, val[0]
+    result
+  end
+.,.,
 
-# reduce 2 omitted
+module_eval(<<'.,.,', 'parser.y', 4)
+  def _reduce_2(val, _values, result)
+    result = Literal.new :FLOAT, val[0]
+    result
+  end
+.,.,
 
-# reduce 3 omitted
+module_eval(<<'.,.,', 'parser.y', 5)
+  def _reduce_3(val, _values, result)
+    result = Literal.new :STRING, val[0]
+    result
+  end
+.,.,
 
 # reduce 4 omitted
 
-# reduce 5 omitted
+module_eval(<<'.,.,', 'parser.y', 8)
+  def _reduce_5(val, _values, result)
+    result = Literal.new :NAME, val[0]
+    result
+  end
+.,.,
 
 # reduce 6 omitted
 
@@ -257,53 +292,168 @@ Racc_debug_parser = false
 
 # reduce 10 omitted
 
-# reduce 11 omitted
+module_eval(<<'.,.,', 'parser.y', 15)
+  def _reduce_11(val, _values, result)
+    result = Braces.new val[1]
+    result
+  end
+.,.,
 
-# reduce 12 omitted
+module_eval(<<'.,.,', 'parser.y', 17)
+  def _reduce_12(val, _values, result)
+    result = Binard.new '+', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 13 omitted
+module_eval(<<'.,.,', 'parser.y', 18)
+  def _reduce_13(val, _values, result)
+    result = Binard.new '-', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 14 omitted
+module_eval(<<'.,.,', 'parser.y', 19)
+  def _reduce_14(val, _values, result)
+    result = Binard.new '*', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 15 omitted
+module_eval(<<'.,.,', 'parser.y', 20)
+  def _reduce_15(val, _values, result)
+    result = Binard.new '/', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 16 omitted
+module_eval(<<'.,.,', 'parser.y', 21)
+  def _reduce_16(val, _values, result)
+    result = Binard.new '==', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 17 omitted
+module_eval(<<'.,.,', 'parser.y', 22)
+  def _reduce_17(val, _values, result)
+    result = Binard.new '!=', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 18 omitted
+module_eval(<<'.,.,', 'parser.y', 23)
+  def _reduce_18(val, _values, result)
+    result = Binard.new '>=', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 19 omitted
+module_eval(<<'.,.,', 'parser.y', 24)
+  def _reduce_19(val, _values, result)
+    result = Binard.new '<=', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 20 omitted
+module_eval(<<'.,.,', 'parser.y', 25)
+  def _reduce_20(val, _values, result)
+    result = Binard.new '>', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 21 omitted
+module_eval(<<'.,.,', 'parser.y', 26)
+  def _reduce_21(val, _values, result)
+    result = Binard.new '<', val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 22 omitted
+module_eval(<<'.,.,', 'parser.y', 27)
+  def _reduce_22(val, _values, result)
+    result = Binard.new :AND, val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 23 omitted
+module_eval(<<'.,.,', 'parser.y', 28)
+  def _reduce_23(val, _values, result)
+    result = Binard.new :OR, val[0], val[2]
+    result
+  end
+.,.,
 
-# reduce 24 omitted
+module_eval(<<'.,.,', 'parser.y', 30)
+  def _reduce_24(val, _values, result)
+    result = Unary.new '-', val[1]
+    result
+  end
+.,.,
 
-# reduce 25 omitted
+module_eval(<<'.,.,', 'parser.y', 31)
+  def _reduce_25(val, _values, result)
+    result = Unary.new :NOT, val[1]
+    result
+  end
+.,.,
 
-# reduce 26 omitted
+module_eval(<<'.,.,', 'parser.y', 33)
+  def _reduce_26(val, _values, result)
+    result = ArrayGet.new val[0], val[1]
+    result
+  end
+.,.,
 
-# reduce 27 omitted
+module_eval(<<'.,.,', 'parser.y', 35)
+  def _reduce_27(val, _values, result)
+    result = Call.new val[0], val[3]
+    result
+  end
+.,.,
 
-# reduce 28 omitted
+module_eval(<<'.,.,', 'parser.y', 37)
+  def _reduce_28(val, _values, result)
+    val
+    result
+  end
+.,.,
 
-# reduce 29 omitted
+module_eval(<<'.,.,', 'parser.y', 38)
+  def _reduce_29(val, _values, result)
+    val[0].push val[2]; val[0]
+    result
+  end
+.,.,
 
 # reduce 30 omitted
 
-# reduce 31 omitted
+module_eval(<<'.,.,', 'parser.y', 42)
+  def _reduce_31(val, _values, result)
+    result=VariableAssignment.new val[0], val[1]
+    result
+  end
+.,.,
 
-# reduce 32 omitted
+module_eval(<<'.,.,', 'parser.y', 43)
+  def _reduce_32(val, _values, result)
+    raise "Not implemented"
+    result
+  end
+.,.,
 
-# reduce 33 omitted
+module_eval(<<'.,.,', 'parser.y', 45)
+  def _reduce_33(val, _values, result)
+    val[1]
+    result
+  end
+.,.,
 
-# reduce 34 omitted
+module_eval(<<'.,.,', 'parser.y', 47)
+  def _reduce_34(val, _values, result)
+    $scopingManager.push Scope.new val[1], []
+    result
+  end
+.,.,
 
 # reduce 35 omitted
 
@@ -325,19 +475,54 @@ Racc_debug_parser = false
 
 # reduce 44 omitted
 
-# reduce 45 omitted
+module_eval(<<'.,.,', 'parser.y', 64)
+  def _reduce_45(val, _values, result)
+    $scopingManager.addCode val[1]
+    result
+  end
+.,.,
 
-# reduce 46 omitted
+module_eval(<<'.,.,', 'parser.y', 65)
+  def _reduce_46(val, _values, result)
+    $scopingManager.addCode val[1]
+    result
+  end
+.,.,
 
-# reduce 47 omitted
+module_eval(<<'.,.,', 'parser.y', 66)
+  def _reduce_47(val, _values, result)
+    $scopingManager.addCode val[1]
+    result
+  end
+.,.,
 
-# reduce 48 omitted
+module_eval(<<'.,.,', 'parser.y', 67)
+  def _reduce_48(val, _values, result)
+    $scopingManager.addCode Exitwhen.new val[1]
+    result
+  end
+.,.,
 
-# reduce 49 omitted
+module_eval(<<'.,.,', 'parser.y', 68)
+  def _reduce_49(val, _values, result)
+    $scopingManager.push IfBlock.new []; $scopingManager.addBlock If.new( val[1], []); result=nil 
+    result
+  end
+.,.,
 
-# reduce 50 omitted
+module_eval(<<'.,.,', 'parser.y', 69)
+  def _reduce_50(val, _values, result)
+    $scopingManager.pop; $scopingManager.addBlock ElseIf.new val[1], []; result = nil
+    result
+  end
+.,.,
 
-# reduce 51 omitted
+module_eval(<<'.,.,', 'parser.y', 70)
+  def _reduce_51(val, _values, result)
+    $scopingManager.pop; $scopingManager.addBlock Else.new []; result = nil
+    result
+  end
+.,.,
 
 # reduce 52 omitted
 
@@ -361,11 +546,26 @@ Racc_debug_parser = false
 
 # reduce 62 omitted
 
-# reduce 63 omitted
+module_eval(<<'.,.,', 'parser.y', 90)
+  def _reduce_63(val, _values, result)
+    $scopingManager.pop
+    result
+  end
+.,.,
 
-# reduce 64 omitted
+module_eval(<<'.,.,', 'parser.y', 91)
+  def _reduce_64(val, _values, result)
+    $scopingManager.pop
+    result
+  end
+.,.,
 
-# reduce 65 omitted
+module_eval(<<'.,.,', 'parser.y', 92)
+  def _reduce_65(val, _values, result)
+    $scopingManager.pop
+    result
+  end
+.,.,
 
 # reduce 66 omitted
 
@@ -378,3 +578,15 @@ def _reduce_none(val, _values, result)
 end
 
 end   # class YassParser
+
+  
+if $0 == __FILE__
+  src = <<EOS
+
+EOS
+  puts 'parsing:'
+  print src
+  puts
+  puts 'result:'
+  YassParser.new.start(src)
+end

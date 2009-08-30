@@ -48,7 +48,7 @@ rule
 	scope		:	SCOPE IDENTIFER {$scopingManager.push Scope.new val[1], []}
 
 	name_list	:	/*nothing*/
-				|	"," NAME
+				|	"," NAME 
 				|	"," NAME name_list
 
 
@@ -58,7 +58,7 @@ rule
 
 
 	function	:	FUN NAME "(" parameter_list ")"
-				|	FUN NAME "(" parameter_list ")" ":" variable
+				|	FUN NAME "(" parameter_list ")" ":" variable 
 				
 	line_word	:	scope
 				|	function
@@ -66,9 +66,9 @@ rule
 				|	set {$scopingManager.addCode val[1]}
 				|	var_definition {$scopingManager.addCode val[1]}
 				|	EXITWHEN expression {$scopingManager.addCode Exitwhen.new val[1]}
-				|	IF expression {$scopingManager.push IfBlock.new []; $scopingManager.addBlock If.new val[1], []; result=nil }
-				|	ELSEIF expression {$scopingManager.pop, $scopingManager.addBlock ElseIf.new val[1], []; result = nil}
-				|	ELSE {$scopingManager.pop, $scopingManager.addBlock Else.new []; result = nil}
+				|	IF expression {$scopingManager.push IfBlock.new []; $scopingManager.addBlock If.new( val[1], []); result=nil }
+				|	ELSEIF expression {$scopingManager.pop; $scopingManager.addBlock ElseIf.new val[1], []; result = nil}
+				|	ELSE {$scopingManager.pop; $scopingManager.addBlock Else.new []; result = nil}
 
 	line		:	line_word EOL 
 				|	line_word end_scope
@@ -95,6 +95,28 @@ rule
 	main		:	/*nothing*/
 				|	EOL
 				|	line main
+---- header
+require 'lexer'
+require 'objects'
 
+---- inner
+	def start(text)
+		@q = do_lex text
+		do_parse
+	end
+	
+	def next_token
+	  @q.shift
+	end
+---- footer
+  
+if $0 == __FILE__
+  src = <<EOS
+
+EOS
+  puts 'parsing:'
+  print src
+  puts
+  puts 'result:'
+  YassParser.new.start(src)
 end
-

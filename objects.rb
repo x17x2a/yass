@@ -190,7 +190,7 @@ class Loop
 	end
 
 	def repr
-		return "loop\n"(@code.map{|t| t.repr}.join "\n")+"\nendloop\n"
+		return "loop\n"+(@code.map{|t| t.repr}.join "\n" ) + "\nendloop\n"
 	end
 end
 
@@ -330,7 +330,7 @@ class ScopingManager
 	attr_accessor :varManager, :layers
   def initialize 
     @varManager = VariableManager.new
-    @layers = [Scope.new "", [] ]
+    @layers = [Scope.new "", [ ] ]
   end
   
   def pop
@@ -349,11 +349,13 @@ class ScopingManager
   
   def addCode(code)
     @layer[-1].code.push code
-    
+  end
+  
   def addBlock(block)
     @layer[-1].blocks.push block
     self.push block
-
+  end
+end
 $scopingManager = ScopingManager.new
 
 Variable.new("int", "abc").repr

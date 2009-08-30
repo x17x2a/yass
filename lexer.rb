@@ -18,7 +18,7 @@ class String
 
 end
 
-def parse(str)
+def do_lex(str)
 	q=[]
 	until str.empty?
 	#puts "str= "+str
@@ -93,8 +93,8 @@ def parse(str)
 end
 
 #TODO: find out why it only finds 1 name and if else not
-testcode = File.open("demo.lexer"){ |file| file.readlines}.join ""
-parse(testcode).each do |t|
-    puts t[0]
-end
+#testcode = File.open("demo.lexer"){ |file| file.readlines}.join ""
+#parse(testcode).each do |t|
+    #puts t[0]
+#end
 
